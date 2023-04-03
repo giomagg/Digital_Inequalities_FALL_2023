@@ -1,0 +1,114 @@
+#The Algorithm in question is trained on the data from 
+#Samory, M., Sen, I., Kohne, J., Flöck, F., & Wagner, C. (2021). “Call me sexist, but.” : Revisiting Sexism Detection Using Psychological Scales and Adversarial Samples. 
+#Proceedings of the International AAAI Conference on Web and Social Media, 15(1), 573-584
+
+
+
+#Load data
+
+import os
+import pandas as pd
+
+os.chdir("/content/drive/MyDrive/Colab Notebooks/Inequality")
+df_sexism = pd.read_csv("sexism_data.csv")
+#Prep Data for algorithm
+
+df_sexism["sexist_dummy"] = df_sexism["sexist"].astype(int)
+df = df_sexism
+
+df['set']=['training']*int(len(df)*.8) + ['testing']*(len(df)-int(len(df)*.8))
+
+df['sexist_dummy'].value_counts()
+# 0    11533
+# 1     1804
+
+#drop duplicates
+df=df.drop_duplicates(subset='text') 
+#shuffle rows
+df=df.sample(frac=1) 
+
+df_training=df[df['set']=='training']
+df_testing=df[df['set']=='testing']
+
+
+#Instal and import relevant libraries
+# we are using a statistical test called Krippendorff Score to measure the inter-coder reliability
+! pip install krippendorff
+!git clone https://github.com/rubingshen/AugmentedSocialScientist.git
+!pip install ./AugmentedSocialScientist/package/
+ 
+
+from AugmentedSocialScientist import bert # note that we could use a language model trained on tweets like Berttweet 
+ 
+
+#Train the algorithm
+
+train_loader = bert.encode(df_training.text.values, df_training.sexist_dummy.values)
+test_loader = bert.encode(df_testing.text.values, df_testing.sexist_dummy.values)
+score = bert.run_training(train_loader, 
+                          test_loader, 
+                          n_epochs=5, 
+                          lr=5e-5, 
+                          seed_val=42,
+                          save_model_as='sexism_classifier_model_5epochs')
+
+#THIS IS THE OUTPUT WITH THE EVALUATION METRICS
+#              precision    recall  f1-score   support
+
+ #          0       0.96      0.96      0.96      2281
+ #          1       0.74      0.74      0.74       354
+
+ #   accuracy                           0.93      2635
+ #  macro avg       0.85      0.85      0.85      2635
+#weighted avg       0.93      0.93      0.93      2635
+
+
+#Predicting on the whistleblower dataset
+
+import numpy as np
+#For Zatko
+df_pred_zatko = pd.read_csv("Zatko_with_polarity.csv")
+pred_loader_zatko = bert.encode(df_pred_zatko.text.values)
+pred_proba_zatko = bert.predict_with_model(pred_loader_zatko, model_path='./models/sexism_classifier_model_5epochs')
+ 
+df_pred_zatko['sexist_pred'] = np.argmax(pred_proba_zatko, axis=1)
+df_pred_zatko['pred_proba'] = np.max(pred_proba_zatko, axis=1)
+
+df = df_pred_zatko[["id",  'timestamp_utc', 'local_time', 'user_screen_name', 
+                    'text', 'possibly_sensitive', 'retweet_count',
+                    'like_count', 'reply_count', 'lang','polarity', 'sexist_pred',
+                    'pred_proba']]
+
+#Save csv with predictions 
+df_pred_zatko.to_csv('Zatko_polarity&sexism.csv')
+
+#Now for Haugen
+df_pred_haugen = pd.concat([pd.read_csv("haugen1.csv"), pd.read_csv("haugen.csv")])
+pred_loader_haugen = bert.encode(df_pred_haugen.text.values)
+pred_proba_haugen = bert.predict_with_model(pred_loader_haugen, model_path='./models/sexism_classifier_model')
+ 
+df_pred_haugen['sexist_pred'] = np.argmax(pred_proba_haugen, axis=1)
+df_pred_haugen['pred_proba'] = np.max(pred_proba_haugen, axis=1)
+
+#Save csv with predictions
+df_pred_haugen.to_csv('Haugen_sexism.csv')
+
+
+#Compare Sexism in Haugen and Zatko Debates
+import pandas as pd
+import os
+os.chdir("/content/drive/MyDrive/Colab Notebooks/Inequality")
+df_pred_haugen = pd.read_csv("Haugen_sexism.csv")
+df_pred_zatko = pd.read_csv("Zatko_sexism.csv")
+
+n_sexist_zatko = df_pred_zatko[df_pred_zatko['sexist_pred'] == 1]
+n_sexist_haugen = df_pred_haugen[df_pred_haugen['sexist_pred'] == 1]
+print(n_sexist_zatko)
+print(n_sexist_haugen)
+
+#Display the sexist messages towards Haugen
+list(n_sexist_haugen["text"])
+
+#Calculate sexist percentage of all tweets in the Haugen dataset
+len(n_sexist_haugen['sexist_pred']) / len(df_pred_haugen['sexist_pred'])
+#OUTPUT = 0.0008142275551746304
