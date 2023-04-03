@@ -31,15 +31,16 @@ df_training=df[df['set']=='training']
 df_testing=df[df['set']=='testing']
 
 
+
 #Instal and import relevant libraries
 # we are using a statistical test called Krippendorff Score to measure the inter-coder reliability
 ! pip install krippendorff
 !git clone https://github.com/rubingshen/AugmentedSocialScientist.git
 !pip install ./AugmentedSocialScientist/package/
+
+from AugmentedSocialScientist import bert 
  
 
-from AugmentedSocialScientist import bert # note that we could use a language model trained on tweets like Berttweet 
- 
 
 #Train the algorithm
 
@@ -63,7 +64,9 @@ score = bert.run_training(train_loader,
 #weighted avg       0.93      0.93      0.93      2635
 
 
-#Predicting on the whistleblower dataset
+
+
+#Predicting sexism on the whistleblower dataset
 
 import numpy as np
 #For Zatko
