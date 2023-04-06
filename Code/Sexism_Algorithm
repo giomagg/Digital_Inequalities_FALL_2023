@@ -33,7 +33,6 @@ df_testing=df[df['set']=='testing']
 
 
 #Instal and import relevant libraries
-# we are using a statistical test called Krippendorff Score to measure the inter-coder reliability
 ! pip install krippendorff
 !git clone https://github.com/rubingshen/AugmentedSocialScientist.git
 !pip install ./AugmentedSocialScientist/package/
