@@ -1,6 +1,6 @@
 # Digital Inequalities – SPRING 2023
 
-This repository provides access to the code and the data used for the social media data analysis final project in the context of Prof. Jen Schradie's course "Digital Inequality: Participation, Production and Pluralism in the Internet Era" offered in the Spring 2023 at Sciences Po Paris. 
+This research project started in the context of Prof. Jen Schradie's course "Digital Inequality: Participation, Production and Pluralism in the Internet Era" offered in the Spring 2023 at Sciences Po Paris. It was then continued and refined for publication by the author. 
 
 ## The project in a nutshel
 
