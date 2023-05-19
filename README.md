@@ -1,4 +1,5 @@
-# Digital Inequalities – SPRING 2023
+# Gender and Whistleblowing Online
+## Comparative Analysis of the Twitter Discourse around Peiter Zatko and Frances Haugen’s Revelations – A look into gender-based elements
 
 This research project started in the context of Prof. Jen Schradie's course "Digital Inequality: Participation, Production and Pluralism in the Internet Era" offered in the Spring 2023 at Sciences Po Paris. It was then continued and refined for publication by the author. 
 
