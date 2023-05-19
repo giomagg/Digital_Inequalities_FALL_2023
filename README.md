@@ -11,7 +11,7 @@ In late August 2022, whistle-blower Peiter Zatko raised allegations against his 
 The research idea is to investigate the differences in the discourses developed around the two whistle-blowers – one male and one female – to detect the presence of targeted gender-based harassment and digital sexism. 
 
 ## Repositories
-The *data* repository comprehends the downloaded social media data, the dictionary used to detect sexual-harrassment (based on Rezvan et al. 2018), and other elaborations of the Twitter data.
+The *data* repository contains the dictionary used to detect sexual-harrassment (based on Rezvan et al. 2018), some elaborations of the Twitter data, and the training data for the sexism algorithm.
 
 The *code* repository includes the code used during the project: (i) data analysis; (ii) sexism detection algorithm training (trained on the Samory 2021 dataset).
 
