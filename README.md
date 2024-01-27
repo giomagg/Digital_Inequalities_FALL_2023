@@ -3,6 +3,8 @@
 
 This research project started in the context of Prof. Jen Schradie's course "Digital Inequality: Participation, Production and Pluralism in the Internet Era" offered in the Spring 2023 at Sciences Po Paris. It was then continued and refined for publication by the author. 
 
+Publication [here][https://studi-internazionali.org/wp-content/uploads/2023/07/Numero-7-CSI-Review.pdf].
+
 ## The project in a nutshel
 
 In late September 2021, whistle-blower Frances Haugen disclosed private documents from Meta showing that the company was aware of the harmful effects its services were having on society. She was invited for a congressional testimony on October 5th 2021.
